@@ -4,9 +4,9 @@ import { Hero } from './components/Hero';
 
 function App() {
   return (
-    <div className="min-h-screen bg-cream">
+    <div className="min-h-screen animated-bg">
       <Navbar />
-      <main>
+      <main className="pt-16">
         <Hero />
       </main>
     </div>

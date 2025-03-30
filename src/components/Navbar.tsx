@@ -6,8 +6,7 @@ import {
   Bars3Icon, 
   XMarkIcon, 
   MagnifyingGlassIcon, 
-  BellIcon, 
-  UserCircleIcon 
+  BellIcon,
 } from '@heroicons/react/24/outline';
 
 const navigation = [
@@ -60,18 +59,21 @@ const mockNotifications = [
 const mockUser = {
   name: 'John Doe',
   email: 'john@example.com',
-  avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+  avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
 };
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [showNotifications, setShowNotifications] = useState(false);
-  const [showProfile, setShowProfile] = useState(false);
 
   return (
     <header className="fixed inset-x-0 top-0 z-50">
-      <div className="absolute inset-0 bg-white/80 backdrop-blur-md" />
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="absolute inset-0 glass"
+      />
+      
       <nav className="relative flex items-center justify-between p-6 lg:px-8" aria-label="Global">
         <div className="flex lg:flex-1">
           <motion.a
@@ -80,20 +82,20 @@ export function Navbar() {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
-            <span className="font-serif text-2xl bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+            <span className="font-serif text-2xl text-gradient font-bold">
               Essence
             </span>
           </motion.a>
         </div>
 
         {/* Desktop Navigation */}
-        <div className="hidden lg:flex lg:gap-x-8">
+        <div className="hidden lg:flex lg:gap-x-8 items-center">
           <div className="relative flex items-center">
             <MagnifyingGlassIcon className="absolute left-3 h-5 w-5 text-gray-400" />
             <input
               type="text"
               placeholder="Search..."
-              className="pl-10 pr-4 py-2 rounded-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary/20 w-64 text-sm"
+              className="pl-10 pr-4 py-2 rounded-full bg-white/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary/20 w-64 text-sm transition-all duration-300"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -103,7 +105,7 @@ export function Navbar() {
             <motion.a
               key={item.name}
               href={item.href}
-              className="text-sm font-medium text-gray-900 hover:text-primary transition-colors relative group py-2"
+              className="text-sm font-medium text-charcoal hover:text-primary transition-colors relative group py-2"
               whileHover={{ y: -2 }}
               whileTap={{ y: 0 }}
             >
@@ -117,9 +119,9 @@ export function Navbar() {
         <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-x-6">
           {/* Notifications */}
           <Popover className="relative">
-            <Popover.Button className="relative p-2 rounded-full hover:bg-gray-100 transition-colors focus:outline-none">
-              <BellIcon className="h-6 w-6 text-gray-600" />
-              <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-red-500" />
+            <Popover.Button className="relative p-2 rounded-full hover:bg-white/50 transition-colors focus:outline-none">
+              <BellIcon className="h-6 w-6 text-charcoal" />
+              <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-secondary animate-pulse" />
             </Popover.Button>
 
             <Transition
@@ -132,38 +134,41 @@ export function Navbar() {
               leaveTo="opacity-0 translate-y-1"
             >
               <Popover.Panel className="absolute right-0 mt-3 w-80 transform px-4">
-                <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
-                  <div className="relative bg-white p-4">
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-sm font-semibold">Notifications</h3>
-                      <button className="text-xs text-primary hover:text-primary/80">
-                        Mark all as read
-                      </button>
-                    </div>
-                    <div className="space-y-3">
-                      {mockNotifications.map((notification) => (
-                        <div
-                          key={notification.id}
-                          className={`flex gap-4 p-2 rounded-lg transition-colors ${
-                            notification.unread ? 'bg-gray-50' : ''
-                          }`}
-                        >
-                          <div className="flex-1">
-                            <p className="text-sm font-medium text-gray-900">
-                              {notification.title}
-                            </p>
-                            <p className="text-sm text-gray-500">
-                              {notification.description}
-                            </p>
-                            <p className="text-xs text-gray-400 mt-1">
-                              {notification.time}
-                            </p>
-                          </div>
-                          {notification.unread && (
-                            <div className="h-2 w-2 mt-2 rounded-full bg-primary" />
-                          )}
-                        </div>
-                      ))}
+                <div className="overflow-hidden rounded-2xl shadow-lg">
+                  <div className="relative bg-white">
+                    <div className="p-4">
+                      <div className="flex items-center justify-between mb-4">
+                        <h3 className="text-sm font-semibold text-charcoal">Notifications</h3>
+                        <button className="text-xs text-primary hover:text-primary/80 transition-colors">
+                          Mark all as read
+                        </button>
+                      </div>
+                      <div className="space-y-3">
+                        {mockNotifications.map((notification) => (
+                          <motion.div
+                            key={notification.id}
+                            className={`flex gap-4 p-3 rounded-xl transition-colors ${
+                              notification.unread ? 'bg-primary/5' : ''
+                            }`}
+                            whileHover={{ x: 4 }}
+                          >
+                            <div className="flex-1">
+                              <p className="text-sm font-medium text-charcoal">
+                                {notification.title}
+                              </p>
+                              <p className="text-sm text-gray-500">
+                                {notification.description}
+                              </p>
+                              <p className="text-xs text-gray-400 mt-1">
+                                {notification.time}
+                              </p>
+                            </div>
+                            {notification.unread && (
+                              <div className="h-2 w-2 mt-2 rounded-full bg-secondary" />
+                            )}
+                          </motion.div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -173,11 +178,12 @@ export function Navbar() {
 
           {/* User Profile */}
           <Popover className="relative">
-            <Popover.Button className="flex items-center gap-2 p-2 rounded-full hover:bg-gray-100 transition-colors focus:outline-none">
-              <img
+            <Popover.Button className="flex items-center gap-2 p-2 rounded-full hover:bg-white/50 transition-colors focus:outline-none">
+              <motion.img
                 src={mockUser.avatar}
                 alt={mockUser.name}
-                className="h-8 w-8 rounded-full object-cover"
+                className="h-8 w-8 rounded-full object-cover ring-2 ring-white"
+                whileHover={{ scale: 1.05 }}
               />
             </Popover.Button>
 
@@ -191,17 +197,17 @@ export function Navbar() {
               leaveTo="opacity-0 translate-y-1"
             >
               <Popover.Panel className="absolute right-0 mt-3 w-64 transform px-4">
-                <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
+                <div className="overflow-hidden rounded-2xl shadow-lg">
                   <div className="relative bg-white">
                     <div className="p-4">
                       <div className="flex items-center gap-3">
                         <img
                           src={mockUser.avatar}
                           alt={mockUser.name}
-                          className="h-10 w-10 rounded-full object-cover"
+                          className="h-10 w-10 rounded-full object-cover ring-2 ring-primary/20"
                         />
                         <div>
-                          <p className="text-sm font-medium text-gray-900">
+                          <p className="text-sm font-medium text-charcoal">
                             {mockUser.name}
                           </p>
                           <p className="text-xs text-gray-500">{mockUser.email}</p>
@@ -214,22 +220,24 @@ export function Navbar() {
                         ['Settings', '/settings'],
                         ['Help', '/help'],
                       ].map(([label, href]) => (
-                        <a
+                        <motion.a
                           key={label}
                           href={href}
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-primary/5 transition-colors"
+                          whileHover={{ x: 2 }}
                         >
                           {label}
-                        </a>
+                        </motion.a>
                       ))}
                     </div>
                     <div className="border-t border-gray-100 p-4">
-                      <button
-                        className="w-full text-left text-sm text-red-600 hover:text-red-500 transition-colors"
+                      <motion.button
+                        className="w-full text-left text-sm text-secondary hover:text-secondary/80 transition-colors"
                         onClick={() => console.log('Sign out')}
+                        whileHover={{ x: 2 }}
                       >
                         Sign out
-                      </button>
+                      </motion.button>
                     </div>
                   </div>
                 </div>
@@ -240,24 +248,25 @@ export function Navbar() {
 
         {/* Mobile menu button */}
         <div className="flex lg:hidden">
-          <button
+          <motion.button
             type="button"
             className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
             onClick={() => setMobileMenuOpen(true)}
+            whileTap={{ scale: 0.95 }}
           >
             <span className="sr-only">Open main menu</span>
             <Bars3Icon className="h-6 w-6" aria-hidden="true" />
-          </button>
+          </motion.button>
         </div>
       </nav>
 
       {/* Mobile menu */}
       <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
         <div className="fixed inset-0 z-50" />
-        <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+        <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm">
           <div className="flex items-center justify-between">
             <a href="/" className="-m-1.5 p-1.5">
-              <span className="font-serif text-2xl bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+              <span className="font-serif text-2xl text-gradient font-bold">
                 Essence
               </span>
             </a>
@@ -284,14 +293,15 @@ export function Navbar() {
                   />
                 </div>
                 {navigation.map((item) => (
-                  <a
+                  <motion.a
                     key={item.name}
                     href={item.href}
-                    className="group -mx-3 flex items-center gap-2 rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                    className="group -mx-3 flex items-center gap-2 rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-primary/5"
+                    whileHover={{ x: 4 }}
                   >
                     <span className="flex-1">{item.name}</span>
                     <span className="text-sm text-gray-500">{item.description}</span>
-                  </a>
+                  </motion.a>
                 ))}
               </div>
               <div className="py-6">
@@ -300,10 +310,10 @@ export function Navbar() {
                   <img
                     src={mockUser.avatar}
                     alt={mockUser.name}
-                    className="h-10 w-10 rounded-full object-cover"
+                    className="h-10 w-10 rounded-full object-cover ring-2 ring-primary/20"
                   />
                   <div>
-                    <p className="font-medium">{mockUser.name}</p>
+                    <p className="font-medium text-charcoal">{mockUser.name}</p>
                     <p className="text-sm text-gray-500">{mockUser.email}</p>
                   </div>
                 </div>
@@ -313,13 +323,14 @@ export function Navbar() {
                   ['Help', '/help'],
                   ['Sign out', '/logout'],
                 ].map(([label, href]) => (
-                  <a
+                  <motion.a
                     key={label}
                     href={href}
-                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-primary/5"
+                    whileHover={{ x: 4 }}
                   >
                     {label}
-                  </a>
+                  </motion.a>
                 ))}
               </div>
             </div>
