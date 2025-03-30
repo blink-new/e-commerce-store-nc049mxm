@@ -1,9 +1,16 @@
-import { useState } from 'react'
+
+import { Navbar } from './components/Navbar';
+import { Hero } from './components/Hero';
 
 function App() {
   return (
-    <div></div>
-  )
+    <div className="min-h-screen bg-cream">
+      <Navbar />
+      <main>
+        <Hero />
+      </main>
+    </div>
+  );
 }
 
-export default App 
+export default App;
