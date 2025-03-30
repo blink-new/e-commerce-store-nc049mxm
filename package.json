@@ -49,7 +49,8 @@
     "@heroicons/react": "latest",
     "tailwindcss": "latest",
     "postcss": "latest",
-    "autoprefixer": "latest"
+    "autoprefixer": "latest",
+    "react-router-dom": "latest"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
